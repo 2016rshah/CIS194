@@ -40,3 +40,12 @@ sumDigits xs = sum (splitDigits xs)
 splitDigits :: [Integer] -> [Integer]
 splitDigits [] = []
 splitDigits (x:xs) = (toDigits x) ++ splitDigits xs
+
+
+--Exercise 4
+{-
+Example: validate 4012888888881881 = True
+Example: validate 4012888888881882 = False
+-}
+validate :: Integer -> Bool
+validate n = ((sumDigits (doubleEveryOther (toDigits n))) `mod` 10) == 0
