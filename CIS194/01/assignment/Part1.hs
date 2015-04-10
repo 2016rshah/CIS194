@@ -22,5 +22,9 @@ toDigitsRev n
 Example: doubleEveryOther [8,7,6,5] == [16,7,12,5]
 Example: doubleEveryOther [1,2,3] == [1,4,3]
 -}
---doubleEveryOther :: [Integer] -> [Integer]
---doubleEveryOther xs
+doubleEveryOther :: [Integer] -> [Integer]
+doubleEveryOther xs = reverse (zipWith (*) (cycle [1,2]) (reverse xs))
+--Reverse it first because you double every other from the right
+--Then zipWith with multiply it with the array that is circular between 1 and 2
+--The cycle array is infinite but zipWith only goes to the smallest so it is bounded by the length of the arg
+--Then reverse it again to give the answer back the original way
