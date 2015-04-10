@@ -28,3 +28,15 @@ doubleEveryOther xs = reverse (zipWith (*) (cycle [1,2]) (reverse xs))
 --Then zipWith with multiply it with the array that is circular between 1 and 2
 --The cycle array is infinite but zipWith only goes to the smallest so it is bounded by the length of the arg
 --Then reverse it again to give the answer back the original way
+
+
+--Exercise 3
+{-
+Example: sumDigits [16,7,12,5] = 1 + 6 + 7 + 1 + 2 + 5 = 22
+-}
+sumDigits :: [Integer] -> Integer
+sumDigits xs = sum (splitDigits xs)
+
+splitDigits :: [Integer] -> [Integer]
+splitDigits [] = []
+splitDigits (x:xs) = (toDigits x) ++ splitDigits xs
