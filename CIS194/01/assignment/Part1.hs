@@ -1,6 +1,9 @@
 --Validating Credit Card Numbers
 {-# OPTIONS_GHC -Wall #-}
 
+module Part1 where --This makes this file into a module that can be imported in the tests
+--http://stackoverflow.com/a/8945416/3861396
+
 --Exercise 1
 {-
 Example: toDigits 1234 == [1,2,3,4]
@@ -49,3 +52,20 @@ Example: validate 4012888888881882 = False
 -}
 validate :: Integer -> Bool
 validate n = ((sumDigits (doubleEveryOther (toDigits n))) `mod` 10) == 0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
