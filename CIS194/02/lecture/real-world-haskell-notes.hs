@@ -1,52 +1,9 @@
--- From the CIS lecture 
-data Thing = Shoe
-			| Ship
-			| SealingWax
-			| Cabbage
-			| King
-	deriving Show -- This lets GHCI be nice
-
-shoe :: Thing
-shoe = Shoe
-
-listOThings :: [Thing]
-listOThings = [Shoe, SealingWax, King, Cabbage, King]
-
-isSmall :: Thing -> Bool
-isSmall Shoe 		= True
-isSmall SealingWax	= True
-isSmall Ship		= False
-isSmall	Cabbage		= True
-isSmall King 		= False
-
-isSmall2 :: Thing -> Bool
-isSmall2 Ship		= False
-isSmall2 King		= False
-isSmall2 _			= True -- Pattern matching for anything that isn't Ship or King will return true
-
-data FailableDouble = Failure
-					| OK Double 
-	deriving Show
-
-ex01 = Failure
-ex02 = OK 3.4
-
-
-data Person = Person String Int Thing -- Person constructor takes a string name, an int age, and a favorite thing
-	deriving Show
-
-
-brent :: Person
-brent = Person "Brent" 31 SealingWax -- His favorite thing is SealingWax lol
-
-getAge :: Person -> Int 
-getAge (Person _ age _) = age
-
-
 --From RealWorldHaskell suggested reading
-data DataTypeName = Constructor1Name attribute1 -- The DataTypeName and ConstructorName are usually the same if only one constructor.
+{--
+data DataTypeName = Constructor1 Name attribute1 -- The DataTypeName and ConstructorName are usually the same if only one constructor.
 	| Constructor2Name attribute1 attribute2 
 	deriving Show
+--}
 
 type CustomerID = Int --Type synonyms are purely to make code more readable
 
@@ -86,17 +43,3 @@ customer2 = Customer {
             }
 
 --Left off at `Parameterised types` in real world haskell
-
-
-
-
-
-
-
-
-
-
-
-
-
-
