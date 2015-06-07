@@ -16,7 +16,13 @@ skips [True,False] == [[True,False], [False]]
 skips [] == []
 Note that the output should be the same length as the input.
 --}
-skips :: [a] -> [[a]]
+--nthFilter :: a -> [a]
+
+--skips :: [a] -> [[a]]
+--skips xs = map nthFilter xs
+--I know it is going to use map because the input and output are the same size
+--Map a filter which removes 
+
 
 {--
 Exercise 2 Local maxima
@@ -35,6 +41,10 @@ localMaxima [2,3,4,1,5] == [4]
 localMaxima [1,2,3,4,5] == []
 --}
 localMaxima :: [Integer] -> [Integer]
+localMaxima (a:b:c:d)
+	| b > a && b > c = [b] ++ localMaxima (b:c:d)
+	| otherwise		 = localMaxima (b:c:d)
+localMaxima _ = []
 
 {--
 Exercise 3 Histogram
@@ -68,4 +78,4 @@ escape sequences to indicate newline characters. To actually visualize
 the histogram as in the examples above, use putStr, for example,
 putStr (histogram [3,5]).
 --}
-histogram :: [Integer] -> String
+--histogram :: [Integer] -> String
