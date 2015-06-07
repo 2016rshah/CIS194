@@ -1,4 +1,3 @@
-import Test.QuickCheck
 import Data.List
 import Test.HUnit
 
