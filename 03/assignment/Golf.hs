@@ -26,6 +26,15 @@ Note that the output should be the same length as the input.
 --I know it is going to use map because the input and output are the same size
 --Map a filter which removes 
 
+skipn :: ([a], Int) -> [a]
+skipn (xs, n)
+	| length xs < n = []
+	| length xs ==n = [last xs] 
+	| length xs > n = (head (drop (n-1) xs)) : skipn (drop n xs, n)
+
+skips :: [a] -> [[a]]
+skips xs = map (skipn) (zip [xs | _ <- xs] [1..])
+
 
 {--
 Exercise 2 Local maxima
