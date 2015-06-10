@@ -4,13 +4,6 @@ import Golf
 {--
 Tests
 --}
---ex01Tests = TestList [
---	["ABCD", "BD", "C", "D"] ~=? skips "ABCD", 
---	["hello!", "el!", "l!", "l", "o", "!"] ~=? skips "hello!",
---	[[1]] ~=? skips [1],
---	[[True,False], [False]] ~=? skips [True,False],
---	[] ~=? skips []
---	]
 
 ex01Tests = TestList [
     ["ABCD", "BD", "C", "D"] ~=? skips "ABCD",
@@ -26,8 +19,7 @@ ex02Tests = TestList [
     ]
 
 main = do
-	--runTestTT ex01Tests
     runTestTT ex01Tests
     runTestTT ex02Tests
-    --runTestTT ex03Tests
+    --no tests for third exercise because textual representation is more effort than its worth
     return ()

@@ -70,19 +70,22 @@ contain any numbers less than zero or greater than 9 (that is, it does
 not matter what your function does if the input does contain such
 numbers). Your output must exactly match the output shown in the
 examples below.
+
 histogram [1,1,1,5] ==
-*
-*
-* *
+ *
+ *
+ *   *
 ==========
 0123456789
+
 histogram [1,4,5,4,6,6,3,4,2,4,9] ==
-*
-*
-* *
-****** *
+    *
+    * 
+    * *
+ ******  *
 ==========
 0123456789
+
 Important note: If you type something like histogram [3,5] at
 the ghci prompt, you should see something like this:
 " * * \n==========\n0123456789\n"
@@ -91,6 +94,24 @@ escape sequences to indicate newline characters. To actually visualize
 the histogram as in the examples above, use putStr, for example,
 putStr (histogram [3,5]).
 --}
---histogram :: [Integer] -> String
+freqs :: [Integer] -> [Integer]
+freqs xs = [fromIntegral (length (filter (== i) xs)) | i <- [0..9]]
 
+decrement :: [Integer] -> [Integer]
+decrement (x:xs) 
+    | x == 0    = 0:(decrement xs)
+    | otherwise = (x-1):decrement xs
+decrement _ = []
 
+star :: Integer -> String
+star 0 = " "
+star _ = "*"
+
+fromFreqs :: [Integer] -> String
+--fromFreqs _ = "*"
+fromFreqs xs 
+    | maximum xs > 0 = (fromFreqs . decrement) xs ++ "\n" ++ (foldl (\acc curr -> acc++(star curr)) "" xs)
+    | otherwise      = ""
+
+histogram :: [Integer] -> String
+histogram xs = fromFreqs (freqs xs) ++ "\n==========\n0123456789\n"
