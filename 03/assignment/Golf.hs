@@ -94,8 +94,6 @@ escape sequences to indicate newline characters. To actually visualize
 the histogram as in the examples above, use putStr, for example,
 putStr (histogram [3,5]).
 --}
-freqs :: [Integer] -> [Integer] -- This function takes the given list and returns an array of frequencies for each number from 0..9
-freqs xs = [fromIntegral (length (filter (== i) xs)) | i <- [0..9]]
 
 fromFreqs :: [Integer] -> String
 fromFreqs xs 
@@ -103,4 +101,4 @@ fromFreqs xs
     | otherwise      = ""
 
 histogram :: [Integer] -> String
-histogram xs = (fromFreqs . freqs) xs ++ "\n==========\n0123456789\n"
+histogram xs = (fromFreqs [fromIntegral (length (filter (== i) xs)) | i <- [0..9]]) ++ "\n==========\n0123456789\n"
