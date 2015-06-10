@@ -95,10 +95,12 @@ the histogram as in the examples above, use putStr, for example,
 putStr (histogram [3,5]).
 --}
 
-fromFreqs :: [Integer] -> String
+-- This function takes a list of frequencies and either enters a white space or an asterisk then decrements the frequencies and recurses on a new line
+fromFreqs :: [Integer] -> String 
 fromFreqs xs 
     | maximum xs > 0 = (fromFreqs . (map (subtract 1))) xs ++ "\n" ++ [if i>0 then '*' else ' ' | i <- xs]
     | otherwise      = ""
 
+--This finds the frequency and then calls fromFreqs on it
 histogram :: [Integer] -> String
 histogram xs = (fromFreqs [fromIntegral (length (filter (== i) xs)) | i <- [0..9]]) ++ "\n==========\n0123456789\n"
