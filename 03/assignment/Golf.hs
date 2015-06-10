@@ -114,4 +114,4 @@ fromFreqs xs
     | otherwise      = ""
 
 histogram :: [Integer] -> String
-histogram xs = fromFreqs (freqs xs) ++ "\n==========\n0123456789\n"
+histogram xs = ((fromFreqs . freqs) xs) ++ "\n==========\n0123456789\n"
