@@ -8,12 +8,7 @@ fun1 (x:xs)
     | otherwise = fun1 xs
 
 fun1' :: [Integer] -> Integer
-fun1' = foldl f 1
-    where 
-        f :: Integer -> Integer -> Integer
-        f acc curr
-            | even curr = acc * (curr-2)
-            | otherwise = acc
+fun1' = foldl1 (*) 1 . filter even . map (subtract 2) 
 
 --This function takes the sum of the even hailstone numbers from what I understand
 fun2 :: Integer -> Integer
