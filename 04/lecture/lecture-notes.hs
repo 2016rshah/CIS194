@@ -27,3 +27,7 @@ floorSum = (floor . sum) --this is currying for an array
 
 --Folds accumulate a list into a value
 --Check out http://learnyouahaskell.com/higher-order-functions and ctrl-f for folds
+--Examples:
+--foldr (+) 5 [1,2,3,4] -> 15
+--foldr max 18 [3,6,12,4,55,11] -> 55
+--foldr max 111 [3,6,12,4,55,11] -> 111
