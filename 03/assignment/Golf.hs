@@ -1,3 +1,4 @@
+{-# OPTIONS_GHC -Wall #-}
 module Golf where
 
 {--
@@ -28,9 +29,9 @@ Note that the output should be the same length as the input.
 
 skipn :: ([a], Int) -> [a]
 skipn (xs, n)
-	| length xs < n = []
 	| length xs ==n = [last xs] 
 	| length xs > n = (head (drop (n-1) xs)) : skipn (drop n xs, n)
+	| otherwise 	= []
 
 skips :: [a] -> [[a]]
 skips xs = map (skipn) (zip [xs | _ <- xs] [1..])
