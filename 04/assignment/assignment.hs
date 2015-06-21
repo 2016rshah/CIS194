@@ -21,3 +21,10 @@ fun2' = sum . filter even . takeWhile (>1) . iterate h
     where h n 
             | even n = n `div` 2
             | otherwise = 3 * n + 1
+
+--Exercise 3
+xor :: [Bool] -> Bool --true if odd number of trues
+xor = foldr (\_ acc -> not acc) False . filter (\x -> x == True)
+
+map' :: (a -> b) -> [a] -> [b]
+map' f = foldr (\curr acc -> (f curr) : acc) []
