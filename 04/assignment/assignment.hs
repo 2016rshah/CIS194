@@ -22,9 +22,55 @@ fun2' = sum . filter even . takeWhile (>1) . iterate h
             | even n = n `div` 2
             | otherwise = 3 * n + 1
 
+--Exercise 2
+data Tree a = Leaf 
+        | Node Integer (Tree a) a (Tree a)
+    deriving (Show, Eq)
+
+foldTree :: [a] -> Tree a
+foldTree = foldr insert Leaf  
+    where
+        insert :: a -> Tree a -> Tree a
+        insert x Leaf = Node 0 Leaf x Leaf 
+        insert curr (Node _ Leaf r Leaf) = Node 1 (insert curr Leaf) r Leaf 
+        insert curr (Node _ lt@(Node lh _ _ _) r Leaf) = Node lh lt r (insert curr Leaf)
+        insert curr (Node _ Leaf r rt@(Node rh _ _ _)) = Node rh (insert curr Leaf) r rt 
+        insert curr (Node h lt@(Node lh _ _ _) r rt@(Node rh _ _ _))
+            | lh > rh = Node (1+lh) lt r (insert curr rt)
+            | rh > lh = Node (1+rh) (insert curr lt) r rt
+            | otherwise=Node (1+h) (insert curr lt) r rt 
+
+{--
+    Node 3 
+        (Node 2 
+            (Node 1 
+                (Node 0 Leaf 'D' Leaf) 
+                'G' 
+                Leaf
+            ) 
+            'I' 
+            (Node 1 
+                (Node 0 Leaf 'C' Leaf) 
+                'E' 
+                Leaf
+            )
+        ) 
+        'J' 
+        (Node 1 
+            (Node 1 
+                (Node 0 Leaf 'A' Leaf) 
+                'F' 
+                Leaf
+            ) 
+            'H' 
+            (Node 0 Leaf 'B' Leaf)
+        )
+--}
+
 --Exercise 3
 xor :: [Bool] -> Bool --true if odd number of trues
 xor = foldr (\_ acc -> not acc) False . filter (\x -> x == True)
 
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\curr acc -> (f curr) : acc) []
+
