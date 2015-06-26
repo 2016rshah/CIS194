@@ -1,4 +1,5 @@
 {-# OPTIONS_GHC -Wall #-}
+import Data.List
 
 --Exercise 1
 fun1 :: [Integer] -> Integer
@@ -74,3 +75,20 @@ xor = foldr (\_ acc -> not acc) False . filter (\x -> x == True)
 map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\curr acc -> (f curr) : acc) []
 
+--Exercise 4
+
+{--cartProd [1,2] [’a’,’b’] == [(1,’a’),(1,’b’),(2,’a’),(2,’b’)]--}
+cartProd :: [a] -> [b] -> [(a, b)]
+cartProd xs ys = [(x,y) | x <- xs, y <- ys]
+
+finalArith :: [Integer] -> [Integer]
+finalArith = (map (+ 1) . map (* 2))
+
+ijs :: Integer -> [(Integer, Integer)]
+ijs n = takeWhile (\x -> iA x < n) $ cartProd [1..] [1..]
+
+iA :: (Integer, Integer) -> Integer
+iA (i, j) = i + j + 2 * i * j
+
+sieveSundaram :: Integer -> [Integer]
+sieveSundaram n = (finalArith . (\\) [1..n] . map iA . ijs) n
