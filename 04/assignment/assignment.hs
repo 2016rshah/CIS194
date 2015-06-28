@@ -29,17 +29,17 @@ data Tree a = Leaf
     deriving (Show, Eq)
 
 foldTree :: [a] -> Tree a
-foldTree = foldr insert Leaf  
+foldTree = foldr i Leaf  
     where
-        insert :: a -> Tree a -> Tree a
-        insert x Leaf = Node 0 Leaf x Leaf 
-        insert curr (Node _ Leaf r Leaf) = Node 1 (insert curr Leaf) r Leaf 
-        insert curr (Node _ lt@(Node lh _ _ _) r Leaf) = Node lh lt r (insert curr Leaf)
-        insert curr (Node _ Leaf r rt@(Node rh _ _ _)) = Node rh (insert curr Leaf) r rt 
-        insert curr (Node h lt@(Node lh _ _ _) r rt@(Node rh _ _ _))
-            | lh > rh = Node (1+lh) lt r (insert curr rt)
-            | rh > lh = Node (1+rh) (insert curr lt) r rt
-            | otherwise=Node (1+h) (insert curr lt) r rt 
+        i :: a -> Tree a -> Tree a
+        i x Leaf = Node 0 Leaf x Leaf
+        i curr (Node _ Leaf r Leaf) = Node 1 (i curr Leaf) r Leaf 
+        i curr (Node _ lt@(Node lh _ _ _) r Leaf) = Node lh lt r (i curr Leaf)
+        i curr (Node _ Leaf r rt@(Node rh _ _ _)) = Node rh (i curr Leaf) r rt 
+        i curr (Node h lt@(Node lh _ _ _) r rt@(Node rh _ _ _))
+            | lh > rh = Node (1+lh) lt r (i curr rt)
+            | rh > lh = Node (1+rh) (i curr lt) r rt
+            | otherwise=Node (1+h) (i curr lt) r rt 
 
 {--
     Node 3 
@@ -76,19 +76,18 @@ map' :: (a -> b) -> [a] -> [b]
 map' f = foldr (\curr acc -> (f curr) : acc) []
 
 --Exercise 4
-
-{--cartProd [1,2] [’a’,’b’] == [(1,’a’),(1,’b’),(2,’a’),(2,’b’)]--}
-cartProd :: [a] -> [b] -> [(a, b)]
-cartProd xs ys = [(x,y) | x <- xs, y <- ys]
-
-finalArith :: [Integer] -> [Integer]
-finalArith = (map (+ 1) . map (* 2))
-
-ijs :: Integer -> [(Integer, Integer)]
-ijs n = takeWhile (\x -> iA x < n) $ cartProd [1..] [1..]
-
-iA :: (Integer, Integer) -> Integer
-iA (i, j) = i + j + 2 * i * j
-
 sieveSundaram :: Integer -> [Integer]
 sieveSundaram n = (finalArith . (\\) [1..n] . map iA . ijs) n
+    where
+        {--cartProd [1,2] [’a’,’b’] == [(1,’a’),(1,’b’),(2,’a’),(2,’b’)]--}
+        cartProd :: [a] -> [b] -> [(a, b)]
+        cartProd xs ys = [(x,y) | x <- xs, y <- ys]
+
+        finalArith :: [Integer] -> [Integer]
+        finalArith = (map (+ 1) . map (* 2))
+
+        ijs :: Integer -> [(Integer, Integer)]
+        ijs m = takeWhile (\x -> iA x < m) $ cartProd [1..] [1..]
+
+        iA :: (Integer, Integer) -> Integer
+        iA (i, j) = i + j + 2 * i * j
