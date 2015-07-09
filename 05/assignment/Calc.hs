@@ -35,13 +35,15 @@ reify = id
 testExp :: Expr a => Maybe a
 testExp = parseExp lit add mul "(3 * -4) + 5"
 
-testInteger = testExp :: Maybe Integer 	-- Just (-7)
+testInteger :: Maybe Integer
+testInteger = testExp 	-- Just (-7)
 instance (Expr Integer) where
 	add x y = x + y 
 	mul x y = x * y 
 	lit = id
 
-testBool = testExp :: Maybe Bool 		-- Just True
+testBool :: Maybe Bool
+testBool = testExp 		-- Just True
 instance (Expr Bool) where
 	add x y = x || y
 	mul x y = x && y 
@@ -50,7 +52,8 @@ instance (Expr Bool) where
 		| otherwise = False
 
 newtype MinMax = MinMax Integer deriving (Eq, Show, Ord) -- Added Ord to typeclasses
-testMM = testExp :: Maybe MinMax		-- Just (MinMax 5)
+testMM :: Maybe MinMax
+testMM = testExp		-- Just (MinMax 5)
 instance (Expr MinMax) where
 	add = max
 	mul = min
@@ -58,7 +61,8 @@ instance (Expr MinMax) where
 
 --I'm not sure I entirely understood this task. 
 newtype Mod7 = Mod7 Integer deriving (Eq, Show)
-testSat = testExp :: Maybe Mod7 			-- Just (Mod7 0)
+testSat :: Maybe Mod7
+testSat = testExp 			-- Just (Mod7 0)
 instance (Expr Mod7) where
 	lit z 
 		| z >= 0 && z < 7 = Mod7 z
@@ -73,7 +77,8 @@ instance Expr VM.Program where
 	add x y = x ++ y ++ [VM.Add] 
 	mul x y = x ++ y ++ [VM.Mul]
 
-testProg = testExp :: Maybe VM.Program
+testProg :: Maybe VM.Program
+testProg = testExp
 
 compile :: String -> Maybe VM.Program
-compile s = parseExp lit add mul s :: Maybe VM.Program
+compile = parseExp lit add mul
