@@ -1,18 +1,21 @@
+{-# LANGUAGE TypeSynonymInstances #-}
+{-# LANGUAGE FlexibleInstances #-}
 {-# OPTIONS_GHC -Wall #-}
 module Calc where
 
-import ExprT
+import ExprT as T
 import Parser
+import StackVM as VM
 
 --Exercise 1 
 eval :: ExprT -> Integer
-eval (Lit z) = z
-eval (Mul x y) = eval x * eval y 
-eval (Add x y) = eval x + eval y 
+eval (T.Lit z) = z
+eval (T.Mul x y) = eval x * eval y 
+eval (T.Add x y) = eval x + eval y 
 
 --Exercise 2
 evalStr :: String -> Maybe Integer
-evalStr = maybe Nothing (Just . eval) . parseExp Lit Add Mul
+evalStr = maybe Nothing (Just . eval) . parseExp T.Lit T.Add T.Mul
 
 --Exercise 3
 class Expr a where
@@ -21,9 +24,9 @@ class Expr a where
   mul :: a -> a -> a
 
 instance Expr ExprT where
-  lit = Lit
-  add = Add
-  mul = Mul
+  lit = T.Lit
+  add = T.Add
+  mul = T.Mul
 
 reify :: ExprT -> ExprT
 reify = id
@@ -62,3 +65,15 @@ instance (Expr Mod7) where
 		| otherwise = lit (z `mod` 7)
 	add (Mod7 x) (Mod7 y) = lit (x + y)
 	mul (Mod7 x) (Mod7 y) = lit (x * y)
+
+--Exercise 5
+
+instance Expr VM.Program where
+	lit z = [VM.PushI z] 
+	add x y = x ++ y ++ [VM.Add] 
+	mul x y = x ++ y ++ [VM.Mul]
+
+testProg = testExp :: Maybe VM.Program
+
+compile :: String -> Maybe VM.Program
+compile s = parseExp lit add mul s :: Maybe VM.Program
