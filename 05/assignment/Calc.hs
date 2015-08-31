@@ -19,14 +19,14 @@ evalStr = maybe Nothing (Just . eval) . parseExp T.Lit T.Add T.Mul
 
 --Exercise 3
 class Expr a where
-  lit :: Integer -> a
-  add :: a -> a -> a
-  mul :: a -> a -> a
+	lit :: Integer -> a
+	add :: a -> a -> a
+	mul :: a -> a -> a
 
 instance Expr ExprT where
-  lit = T.Lit
-  add = T.Add
-  mul = T.Mul
+	lit = T.Lit
+	add = T.Add
+	mul = T.Mul
 
 reify :: ExprT -> ExprT
 reify = id

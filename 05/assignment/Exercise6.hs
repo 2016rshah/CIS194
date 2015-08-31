@@ -32,7 +32,7 @@ type MapExpr = (M.Map String Integer -> Maybe Integer) -- This means that if you
 
 --Not entirely clear on this one (?)
 instance HasVars MapExpr where
-  var i m  = M.lookup i m  -- Could curry but this is more useful
+  var s m  = M.lookup s m  -- Could curry but this is more useful
 
 --Arg 1 -> function like + or *
 --Arg 2 -> first maybe value
