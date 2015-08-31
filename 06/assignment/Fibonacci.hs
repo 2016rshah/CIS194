@@ -41,7 +41,21 @@ nats = streamFromSeed (+ 1) (-1)
 negs :: Stream Integer --for testing purposes
 negs = streamFromSeed (subtract 1) (1)
 
-interleaveStreams :: Stream a -> Stream a -> Stream a
+interleaveStreams :: Stream a -> Stream a -> Stream a --Not sure how to use this?
 interleaveStreams (Cons x xs) (Cons y ys) = Cons x (Cons y (interleaveStreams xs ys))
 
+highestPower :: Integer -> Integer
+highestPower x = if x `elem` ps 
+	then ((+) 1 . fromIntegral . length . takeWhile (not . (==) x)) ps
+	else 0
+	where ps = [2 ^ y | y <-[1..x]]
+
+tailStream :: Stream a -> Stream a
+tailStream (Cons a b) = b
+
+headStream :: Stream a -> a --Implemented just 'cause
+headStream (Cons x y) = x
+
+ruler :: Stream Integer
+ruler = streamMap highestPower (tailStream nats)
 
