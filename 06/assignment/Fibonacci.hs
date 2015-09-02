@@ -1,3 +1,6 @@
+{-# LANGUAGE FlexibleInstances #-}
+{-# OPTIONS_GHC -fno-warn-missing-methods #-}
+
 --Exercise 1
 fib :: Integer -> Integer
 fib 0 = 0
@@ -22,6 +25,9 @@ streamToList (Cons a b) = a : (streamToList b)
 
 instance Show a => Show (Stream a) where
 	show = show . take 20 . streamToList 
+
+showX :: Show a => Int -> Stream a -> String
+showX x = show . take x . streamToList
 
 --Exercise 4
 streamRepeat :: a -> Stream a
@@ -58,4 +64,27 @@ headStream (Cons x y) = x
 
 ruler :: Stream Integer
 ruler = streamMap highestPower (tailStream nats)
+
+
+--Exercise 6
+
+type SI = Stream Integer
+
+x :: SI
+x = Cons 0 (Cons 1 (streamRepeat 0))
+
+instance Num SI where
+	fromInteger n = Cons n (streamRepeat 0) 
+	negate (Cons i s) = Cons (-i) (negate s)
+	(+) (Cons a as) (Cons b bs) = Cons (a + b) (as + bs)
+	(*) (Cons a as) bbs@(Cons b bs) = Cons (a * b) ((streamMap (* a) bs) + (as * bbs))
+
+instance Fractional SI where
+	(/) (Cons a as) (Cons b bs) = q
+		where q = Cons (a `div` b) (streamMap (`div` b) (as - q * bs))
+
+--I don't understand the derivation for the divide operator or the derivation for fibs3
+
+fibs3 :: SI
+fibs3 = x / (1 - x - x * x)
 
