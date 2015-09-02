@@ -88,3 +88,26 @@ instance Fractional SI where
 fibs3 :: SI
 fibs3 = x / (1 - x - x * x)
 
+--Exercise 7
+data Matrix = Matrix ((Integer, Integer), (Integer, Integer))
+
+instance Show Matrix where
+	show (Matrix ((a, b), (c, d))) = "[" ++ show a ++ ", " ++ show b ++ "]\n[" ++ show c ++ ", " ++ show d ++ "]"
+
+instance Num Matrix where
+	(*) (Matrix ((a, b), (c, d))) (Matrix ((e, f), (g, h))) = Matrix (
+			((a*e + b*g), (a*f + b*h)), 
+			((c*e + d*g), (c*f + d*h))
+		)
+
+f :: Matrix
+f = Matrix ((1, 1), (1, 0))
+
+l :: Matrix -> Integer
+l (Matrix m) = (snd . snd) m
+
+fib4 :: Integer -> Integer
+fib4 0 = 0
+fib4 n = l (f^(n))
+
+--0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
