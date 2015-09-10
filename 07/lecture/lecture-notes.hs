@@ -1,3 +1,5 @@
+import Data.Monoid
+
 --You can fold most data structures
 --For example, fold trees!
 
@@ -52,3 +54,40 @@ exprTFold f g h (Mul a b) = h (exprTFold f g h a) (exprTFold f g h b) -- h stand
 
 eval2 :: ExprT -> Integer
 eval2 = exprTFold id (+) (*)
+
+--Monoids
+--A monoid is when you have an associative binary function and a value which acts as an identity with respect to that function. 
+--When something acts as an identity with respect to a function, it means that when called with that function and some other value, the result is always equal to that other value. 
+--1 is the identity with respect to * and [] is the identity with respect to ++.
+
+--In other words
+--If a function on a type is associative, and has a base case, it can be a monoid. 
+-- + is a monoid because it is associative and it's base case is 0
+
+--By associative, I am referring to the associative property that middle school made such a big deal out of
+--Multiplication, addition, and even concatenation of lists are associative
+--`mappend` is the function that needs to be associative
+
+--By base case I mean that if you apply the monoid to the base case a variable x, it should return just x
+--Like x + 0 returns 0 and y + 0 returns 0. Anything + 0 returns 0
+--`mempty` is the base case
+
+--`mconcat` is given for free when you define a monoid, because it is just a fold on `mempty` and `mappend`
+
+--There was something in CIS194 about `<>` being a synonym for `mappend` but I can't find any more info on that
+
+--Practice, make a few instances of Monoid for Bools. Logic gates
+
+newtype And = And { a :: Bool }
+  deriving (Eq, Show)
+
+instance Monoid And where
+	mempty = And True --default Bool is True
+	mappend (And x) (And y) = And (x && y)
+
+newtype Or = Or { o :: Bool}
+	deriving (Eq, Show)
+
+instance Monoid Or where
+	mempty = Or True
+	mappend (Or x) (Or y) = Or (x || y)
