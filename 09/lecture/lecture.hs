@@ -38,10 +38,3 @@ instance Functor [] where
     fmap g (x:xs) = g x : g x : fmap g xs --bad, because it doubles g x which means that id x : id x is not the same as id x
 
 --There is only one valid instance of functor! Like its been legit proven that there is only one valid functor instance. How cool is that??
-
-
-
-                                                                                
-
-
-                                                                                  
