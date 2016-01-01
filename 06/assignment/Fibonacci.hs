@@ -110,4 +110,9 @@ fib4 :: Integer -> Integer
 fib4 0 = 0
 fib4 n = l (f^(n))
 
+fibs4 :: [Integer]
+fibs4 = map fib4 [0..]
+
 --0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377
+
+main = (putStrLn . show) (fib4 41398)
