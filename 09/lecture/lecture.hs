@@ -38,3 +38,12 @@ instance Functor [] where
     fmap g (x:xs) = g x : g x : fmap g xs --bad, because it doubles g x which means that id x : id x is not the same as id x
 
 --There is only one valid instance of functor! Like its been legit proven that there is only one valid functor instance. How cool is that??
+
+--If you ever find yourself binding the result of an I/O action to a name, only to apply a function to that and call that something else, consider using fmap, because it looks prettier.
+--This works because basically you are mapping a function to what is within the Functor container. In this case the Functor container is IO and you are mapping typical string functions on what is contained in the IO String 
+
+--For example:
+
+main = do
+  reversedUpperCaseInput <- fmap (reverse . toUpper) getLine
+  print reversedUpperCaseInput
