@@ -71,7 +71,38 @@ instance Functor Parser where
 
 instance Applicative Parser where
   pure a = Parser (\str -> Just (a, str))
-  p1 <*> p2 = Parser resultingFunc
-    where resultingFunc str = if (p1 str) == Nothing
-                              then Nothing
-                              else first p2 (p1 str)
+  p1 <*> p2 = Parser f
+              where
+                f str = case runParser p1 str of --using case structure lets you pattern match result of running parser 1
+                  Nothing -> Nothing
+                  (Just (g, rem)) -> fmap (first g) (runParser p2 rem)
+                  --fmap for the Maybe in the result of running parser2
+                  --first for applying the function (g) to the parsed part of parser2
+--What you need to realize is that p1 and p2 do NOT have the same type signature
+--When you run the parser in p1, its parsed portion will be a function
+--When you run the parser in p2, its parsed portion will be a value
+
+abParser :: Parser (Char, Char)
+abParser = (\a b -> (a, b)) <$> (char 'a') <*> (char 'b')
+{-
+runParser abParser "abcdef"
+Just ((’a’,’b’),"cdef")
+-}
+--The returned parser needs to have its parsed value as a tuple of two characters
+
+abParser_ :: Parser ()
+abParser_ = (\a b -> ()) <$> (char 'a') <*> (char 'b')
+
+intPair :: Parser [Integer]
+intPair = (\a b c -> [a, c]) <$> (posInt) <*> (char ' ') <*> posInt 
+
+instance Alternative Parser where
+  empty = Parser (\str -> Nothing)
+  p1 <|> p2 = Parser (\str -> f str)
+              where f s = case runParser p1 s of
+                      Nothing -> runParser p2 s
+                      x -> x --if its not nothing, return it
+
+intOrUppercase :: Parser ()
+intOrUppercase = (\_ -> ()) <$> (e <$> posInt) <|> (e <$> (satisfy isUpper))
+  where e _ = ()
